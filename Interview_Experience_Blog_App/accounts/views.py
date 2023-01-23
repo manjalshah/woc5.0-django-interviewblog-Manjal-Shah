@@ -10,7 +10,12 @@ from .forms import CreateUserForm
 # Create your views here.
 @login_required(login_url='login')
 def home(request):
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'accounts/home.html')
+
+def LandingPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    return render(request, 'accounts/landing.html')
 
 def LoginPage(request):
     if request.user.is_authenticated:
@@ -28,12 +33,11 @@ def LoginPage(request):
             else:
                 messages.info(request, 'Username OR password is incorrect')
 
-
     return render(request, 'accounts/login.html')
 
 def LogoutUser(request):
     logout(request)
-    return redirect('login')
+    return redirect('landing')
 
 def RegisterPage(request):
     if request.user.is_authenticated:
